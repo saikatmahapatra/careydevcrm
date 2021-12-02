@@ -1,0 +1,103 @@
+<div class="absolute-center" *ngIf="loading">
+  <mat-spinner [diameter]="80"></mat-spinner>
+</div>
+<div *ngIf="!loading">
+  <div fxFlex fxLayout="column" fxLayoutGap="0px">
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxLayout="column">
+        <div>
+          <alert></alert>
+        </div>
+        <div *ngIf="account" style="margin-bottom: 15px">
+          <div *ngIf="account.status == 'CUSTOMER'" class="medium-notification success-background">
+            Customer
+          </div>
+        </div>
+        <div>
+          <mat-card class="vertical-layout">
+            <div fxLayout="row wrap" style="margin-bottom:20px">
+              <div>
+                <div class="card-header">{{account.name}}</div>
+                <div [class.inactive-status]="account.status == 'INACTIVE' || account.status == 'TERMINATED'"
+                     [class.normal-status]="account.status == 'ACTIVE' || account.status == 'CUSTOMER'"
+                     [class.yellow-status]="account.status == 'ON_HOLD'"
+                     style="margin-bottom:5px">
+                  {{displayValueMapService.getDisplay(account.status, availableAccountStatuses)}}
+                </div>
+                <div fxHide.gt-xs="true">
+                  <button mat-icon-button color="primary" (click)="editAccount()" title="Edit Account"><mat-icon>edit</mat-icon></button>
+                </div>
+              </div>
+              <div fxFlex="auto">&nbsp;</div>
+              <div fxFlex="40px" style="text-align: left" fxHide.xs="true">
+                <button mat-icon-button color="primary" (click)="editAccount()" title="Edit Account"><mat-icon>edit</mat-icon></button>
+              </div>
+              <!--<div fxFlex="40px" style="text-align:left" fxHide.xs="true">
+      <app-view-contact-menu [contact]="contact"></app-view-contact-menu>
+    </div>-->
+            </div>
+
+            <div fxLayout="row wrap" fxLayout.xs="column">
+              <div class="column-layout" fxFlex.sm="40" fxFlex.gt-sm="20" *ngIf="account.address">
+                <div *ngIf="account.address.street1" class="normal-detail">{{account.address.street1}}</div>
+                <div *ngIf="account.address.street2" class="normal-detail">{{account.address.street2}}</div>
+                <div *ngIf="account.address.city" class="normal-detail">
+                  <span>{{account.address.city}}</span>
+                  <span *ngIf="account.address.state">, {{account.address.state}}</span>
+                  <span>&nbsp;{{account.address.zip}}</span>
+                </div>
+                <div *ngIf="account.address.country" class="normal-detail">{{account.address.country}}</div>
+              </div>
+            </div>
+
+
+            <div fxLayout.xs="column" fxLayout.gt-xs="row wrap">
+              <div fxFlex="45">
+                <div class="view-label label-spacing" fxFlex="40">Industry</div>
+                <div class="normal-detail">
+                  {{displayValueMapService.getDisplay(account.industry, availableIndustries)}}
+                </div>
+              </div>
+              <div fxFlex="45">
+                <div class="view-label label-spacing" fxFlex="40">Source</div>
+                <div class="normal-detail">
+                  {{displayValueMapService.getDisplay(account.source, availableSources)}}
+                </div>
+              </div>
+              <div fxFlex="45">
+                <div class="view-label label-spacing" fxFlex="40">Phone</div>
+                <div class="normal-detail">
+                  {{account.phone.phone}}
+                </div>
+              </div>
+              <div fxFlex="45">
+                <div class="view-label label-spacing" fxFlex="40"># Employees</div>
+                <div class="normal-detail">
+                  {{account.numberOfEmployees | number}}
+                </div>
+              </div>
+              <div fxFlex="45">
+                <div class="view-label label-spacing" fxFlex="40">Revenue</div>
+                <div class="normal-detail">
+                  {{account.annualRevenue | currency}}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div fxLayout.xs="column" fxLayout.gt-xs="row wrap" fxFlex="90">
+                <div class="view-label" fxFlex="20">Description</div>
+                <div class="normal-detail">
+                  {{account.description}}
+                </div>
+              </div>
+            </div>
+
+            <!--<div *ngIf="leanData">
+    <div class="lean-data">This account is lean on data. Please edit and enter some info.</div>
+  </div>-->
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

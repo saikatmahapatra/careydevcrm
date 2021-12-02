@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\features\\accounts",
+    "\\src\\app\\features\\accounts\\view-accounts",
+    "\\src\\app\\features\\contacts",
+    "\\src\\app\\features\\contacts\\view-contacts"
+  ],
+  "SelectedNode": "\\README.md",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,0 +1,25 @@
+<div fxFlex fxLayout="column" fxLayoutGap="0px">
+  <div fxLayout="row wrap">
+    <div fxLayout="column">
+      <div>
+        <h4>Profile Image</h4>
+        <p>Upload a square image no smaller than 200x200. Then click the <strong>Save Image</strong> button to save it.</p>
+      </div>
+      <div class="alert-section">
+        <alert></alert>
+      </div>
+      <div class="upload-image-box">
+        <div style="text-align: center">
+          <app-image-uploader [showSpinner]="showSpinner" [image]="imageToShow"
+                              (uploadedImage)="onUploadedImage($event)"></app-image-uploader>
+        </div>
+        <div *ngIf="!uploading" style="text-align:center">
+          <button mat-raised-button color="primary" [disabled]="!currentFileUpload" (click)="upload()">Save Image</button>
+        </div>
+        <div *ngIf="uploading">
+          <mat-spinner [diameter]="50" class="center-div"></mat-spinner>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

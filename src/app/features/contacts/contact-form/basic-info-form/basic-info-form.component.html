@@ -1,0 +1,230 @@
+<form [formGroup]="basicInfoFormGroup">
+  <div fxLayout="column">
+    <div class="vertical-form-field">
+      <div class="label">First Name</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="30" fxFlex.lt-md="100">
+          <input formControlName="firstName" matInput placeholder="Enter first name" maxlength="50">
+          <mat-error fieldLabel="First name" [simpleValidation]="basicInfoFormGroup.get('firstName')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Last Name</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="30" fxFlex.lt-md="100">
+          <input formControlName="lastName" matInput placeholder="Enter last name" maxlength="50">
+          <mat-error fieldLabel="Last name" [simpleValidation]="basicInfoFormGroup.get('lastName')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Email</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="50" fxFlex.lt-md="100">
+          <input formControlName="email" matInput placeholder="Enter email address" maxlength="50">
+          <mat-error fieldLabel="email" [simpleValidation]="basicInfoFormGroup.get('email')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Title</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="30" fxFlex.lt-md="100">
+          <input formControlName="title" matInput placeholder="Enter title" maxlength="30">
+          <mat-error fieldLabel="Title" [simpleValidation]="basicInfoFormGroup.get('title')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Account <span *ngIf="newAccount" class="badge badge-info">New</span></div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="30" fxFlex.lt-md="100">
+          <input type="text"
+                 placeholder="Select or enter account name"
+                 matInput
+                 formControlName="account"
+                 [matAutocomplete]="auto"
+                 (blur)="leftAccountField()">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let account of filteredAccounts | async" [value]="account.name">
+              {{account.name}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error fieldLabel="Account" [simpleValidation]="basicInfoFormGroup.get('account')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Source</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="30" fxFlex.lt-md="100">
+          <mat-select formControlName="source" placeholder="Select a source">
+            <mat-option *ngFor="let source of availableSources" [value]="source.value">
+              {{source.display}}
+            </mat-option>
+          </mat-select>
+          <mat-error fieldLabel="Source" [simpleValidation]="basicInfoFormGroup.get('source')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Source Details</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="50" fxFlex.lt-md="100">
+          <input formControlName="sourceDetails" matInput placeholder="Enter source details" maxlength="100">
+          <mat-error fieldLabel="Source details" [simpleValidation]="basicInfoFormGroup.get('sourceDetails')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Status</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="30" fxFlex.lt-md="100">
+          <mat-select formControlName="status" placeholder="Select a status">
+            <mat-option *ngFor="let status of availableContactStatuses" [value]="status.value">
+              {{status.display}}
+            </mat-option>
+          </mat-select>
+          <mat-error fieldLabel="Status" [simpleValidation]="basicInfoFormGroup.get('status')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Line of Business</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="30" fxFlex.lt-md="100">
+          <mat-select multiple formControlName="lineOfBusiness" placeholder="Select a line of business">
+            <mat-option *ngFor="let lob of availableLinesOfBusiness" [value]="lob.value">
+              {{lob.display}}
+            </mat-option>
+          </mat-select>
+          <mat-error fieldLabel="LOB" [simpleValidation]="basicInfoFormGroup.get('lineOfBusiness')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Time Zone</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="30" fxFlex.lt-md="100">
+          <input type="text"
+                 placeholder="Select or enter time zone"
+                 matInput
+                 formControlName="timezone"
+                 [matAutocomplete]="autoTimezone">
+          <mat-autocomplete autoActiveFirstOption #autoTimezone="matAutocomplete">
+            <mat-option *ngFor="let zone of filteredTimezones | async" [value]="zone">
+              {{zone}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Birthday Month & Date</div>
+      <div fxLayout="row wrap" fxLayoutGap="25px">
+        <div>
+          <mat-form-field appearance="fill" class="no-label-field">
+            <mat-select formControlName="birthdayMonth" placeholder="Select birthday month" (selectionChange)="getDaysInMonth()">
+              <mat-option *ngFor="let month of availableMonths" [value]="month">
+                {{month}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill" class="no-label-field">
+            <mat-select formControlName="birthdayDay" placeholder="Select birthday date">
+              <mat-option *ngFor="let day of daysInMonth" [value]="day">
+                {{day}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Tags</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="50" fxFlex.lt-md="100">
+          <mat-chip-list #chipList aria-label="Enter tags" formControlName="tags">
+            <mat-chip *ngFor="let tag of basicInfoFormGroup.controls['tags'].value" [selectable]="selectable"
+                      [removable]="removable" (removed)="removeTag(tag)">
+              {{tag}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Add tag & hit Enter"
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   [matChipInputAddOnBlur]="addOnBlur"
+                   (matChipInputTokenEnd)="addTag($event)">
+          </mat-chip-list>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="vertical-form-field">
+      <div class="label">Has Authority</div>
+      <div>
+        <mat-radio-group formControlName="authority">
+          <mat-radio-button value="true">Yes</mat-radio-button>
+          <mat-radio-button value="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="vertical-form-field radio-separator">
+      <div class="label">Call?</div>
+      <div>
+        <mat-radio-group formControlName="canCall">
+          <mat-radio-button value="true" selected>Yes</mat-radio-button>
+          <mat-radio-button value="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="vertical-form-field radio-separator">
+      <div class="label">Text?</div>
+      <div>
+        <mat-radio-group formControlName="canText">
+          <mat-radio-button value="true" selected>Yes</mat-radio-button>
+          <mat-radio-button value="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="vertical-form-field radio-separator">
+      <div class="label">Email?</div>
+      <div>
+        <mat-radio-group formControlName="canEmail">
+          <mat-radio-button value="true" selected>Yes</mat-radio-button>
+          <mat-radio-button value="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="vertical-form-field" style="margin-top:20px">
+      <div class="label">Notes</div>
+      <div>
+        <mat-form-field appearance="fill" class="no-label-field" fxFlex="50"
+                        fxFlex.lt-md="100" style="border: 1px solid black; margin-top: 5px">
+          <textarea formControlName="notes" matInput placeholder="Enter notes" rows="6" cols="40" maxlength="512"></textarea>
+          <mat-error fieldLabel="notes" [simpleValidation]="basicInfoFormGroup.get('notes')"></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </div>
+</form>
